@@ -1,0 +1,5 @@
+﻿namespace LibraryDemo.API.Dtos;
+
+public record CreateAuthor(string name, string nationality, DateTime DateOfBirth);
+public record UpdateAuthor(string name, string nationality);
+public record AuthorDto(string id, string name, string nationality, DateTime DateOfBirth);
