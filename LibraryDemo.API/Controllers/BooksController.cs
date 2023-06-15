@@ -2,6 +2,7 @@
 using LibraryDemo.API.Entities;
 using LibraryDemo.API.Extensions;
 using LibraryDemo.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +19,14 @@ public class BooksController : BaseControllerApi
         _logger = logger;
     }
 
-
+    [Authorize]
     [HttpPost(Name = nameof(CreateBook))]
     public async Task CreateBook(CreateBook book)
     {
         await _bookServices.CreateBookAsync(book.AsEntity());
     }
 
+    [Authorize]
     [HttpGet("{bookId}", Name = nameof(GetBookById))]
     public async Task<ActionResult<BookDto>> GetBookById(string bookId)
     {
@@ -34,6 +36,7 @@ public class BooksController : BaseControllerApi
         return Ok(result?.AsDto());
     }
 
+    [Authorize]
     [HttpGet(Name = nameof(GetBooks))]
     public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
     {
@@ -42,6 +45,7 @@ public class BooksController : BaseControllerApi
         return Ok(results.AsListDto());
     }
 
+    [Authorize]
     [HttpPatch("{bookId}", Name = nameof(UpdateBook))]
     public async Task<ActionResult<AuthorDto>> UpdateBook([FromBody]JsonPatchDocument
         <Book> updateBook, string bookId)

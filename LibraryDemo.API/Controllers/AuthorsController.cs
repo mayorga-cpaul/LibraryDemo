@@ -2,6 +2,7 @@
 using LibraryDemo.API.Entities;
 using LibraryDemo.API.Extensions;
 using LibraryDemo.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,12 +18,14 @@ public class AuthorsController : BaseControllerApi
         _logger = logger;
     }
 
+    [Authorize]
     [HttpPost(Name = nameof(CreateAuthor))]
     public async Task CreateAuthor(CreateAuthor author)
     {
         await _authorRepository.InsertOneAsync(author.AsEntity());
     }
 
+    [Authorize]
     [HttpGet("{authorId}", Name = nameof(GetAuthorById))]
     public async Task<ActionResult<AuthorDto>> GetAuthorById(string authorId)
     {
@@ -32,6 +35,7 @@ public class AuthorsController : BaseControllerApi
         return Ok(result?.AsDto());
     }
 
+    [Authorize]
     [HttpGet(Name = nameof(GetAuthors))]
     public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAuthors()
     {
@@ -39,7 +43,8 @@ public class AuthorsController : BaseControllerApi
         _logger.LogInformation($"Executing: {nameof(GetAuthors)}");
         return Ok(results.AsListDto());
     }
-    
+
+    [Authorize]
     [HttpPatch("{authorId}", Name = nameof(UpdateAuthor))]
     public async Task<ActionResult<AuthorDto>> UpdateAuthor([FromBody]JsonPatchDocument
         <Author> updateAuthor, string authorId)
