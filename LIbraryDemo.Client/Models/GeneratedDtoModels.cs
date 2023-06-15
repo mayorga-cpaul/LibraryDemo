@@ -4,10 +4,10 @@
 // </auto-generated>
 //----------------------
 
-namespace LibraryDemo.Client.Models;
-
+using LIbraryDemo.Client.Interfaces;
 using LIbraryDemo.Client.Models;
-using Microsoft.AspNetCore.JsonPatch.Operations;
+
+namespace LibraryDemo.Client.Models;
 
 [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))")]
 public class AuthorDto : Document
@@ -56,7 +56,7 @@ public partial class BookDto : Document
 }
 
 [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))")]
-public partial class CreateAuthor
+public partial class CreateAuthor : ICreateDocument
 {
     [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public string Name { get; set; }
@@ -70,7 +70,7 @@ public partial class CreateAuthor
 }
 
 [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))")]
-public partial class CreateBook
+public partial class CreateBook : ICreateDocument
 {
     [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public string Title { get; set; }
@@ -107,27 +107,7 @@ public partial class LoginDto
 }
 
 [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))")]
-public partial class Operation
-{
-    [Newtonsoft.Json.JsonProperty("operationType", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-    public OperationType OperationType { get; set; }
-
-    [Newtonsoft.Json.JsonProperty("path", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-    public string Path { get; set; }
-
-    [Newtonsoft.Json.JsonProperty("op", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-    public string Op { get; set; }
-
-    [Newtonsoft.Json.JsonProperty("from", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-    public string From { get; set; }
-
-    [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-    public object Value { get; set; }
-
-}
-
-[System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v11.0.0.0))")]
-public partial class RegisterDto
+public partial class RegisterDto : ICreateDocument
 {
     [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
     public string Email { get; set; }

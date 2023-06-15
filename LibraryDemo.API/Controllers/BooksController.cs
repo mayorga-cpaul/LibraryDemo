@@ -20,7 +20,7 @@ public class BooksController : BaseControllerApi
     }
 
     [Authorize]
-    [HttpPost(Name = nameof(CreateBook))]
+    [HttpPost(nameof(CreateBook))]
     public async Task CreateBook(CreateBook book)
     {
         await _bookServices.CreateBookAsync(book.AsEntity());

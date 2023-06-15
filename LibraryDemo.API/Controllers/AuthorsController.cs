@@ -19,7 +19,7 @@ public class AuthorsController : BaseControllerApi
     }
 
     [Authorize]
-    [HttpPost(Name = nameof(CreateAuthor))]
+    [HttpPost(nameof(CreateAuthor))]
     public async Task CreateAuthor(CreateAuthor author)
     {
         await _authorRepository.InsertOneAsync(author.AsEntity());
