@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryDemo.API.Controllers;
 
-public class BooksController : BaseControllerApi
+public class BookController : BaseControllerApi
 {
     private readonly IBookServices _bookServices;
-    private readonly ILogger<BooksController> _logger;
+    private readonly ILogger<BookController> _logger;
     
-    public BooksController(IBookServices bookServices, ILogger<BooksController> logger)
+    public BookController(IBookServices bookServices, ILogger<BookController> logger)
     {
         _bookServices = bookServices;
         _logger = logger;

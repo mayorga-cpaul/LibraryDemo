@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryDemo.API.Controllers;
 
-public class AuthorsController : BaseControllerApi
+public class AuthorController : BaseControllerApi
 {
     private readonly IMongoRepository<Author> _authorRepository;
-    private readonly ILogger<AuthorsController> _logger;
-    public AuthorsController(IMongoRepository<Author> authorRepository, ILogger<AuthorsController> logger)
+    private readonly ILogger<AuthorController> _logger;
+    public AuthorController(IMongoRepository<Author> authorRepository, ILogger<AuthorController> logger)
     {
         _authorRepository = authorRepository;
         _logger = logger;
@@ -61,6 +61,28 @@ public class AuthorsController : BaseControllerApi
 
         await _authorRepository.ReplaceOneAsync(existingAuthor!);
         _logger.LogInformation($"Author updated: {existingAuthor!.Id.ToString()}");
+
+        return Ok(existingAuthor.AsDto());
+    }
+
+    [Authorize]
+    [HttpDelete("{authorId}")]
+    public async Task DeleteAuthor(string authorId)
+    {
+        await _authorRepository.DeleteByIdAsync(authorId);
+    }
+
+    [Authorize]
+    [HttpPut("{authorId}")]
+    public async Task<ActionResult<AuthorDto>> DeleteAuthor(string authorId, [FromBody] UpdateAuthor updateAuthor)
+    {
+        var existingAuthor = await _authorRepository.FindByIdAsync(authorId);
+        if (existingAuthor is null) return NotFound();
+
+        existingAuthor.Name = updateAuthor.Name;
+        existingAuthor.Name = updateAuthor.Nationality;
+
+        await _authorRepository.ReplaceOneAsync(existingAuthor);
 
         return Ok(existingAuthor.AsDto());
     }
