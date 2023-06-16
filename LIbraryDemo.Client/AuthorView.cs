@@ -30,20 +30,30 @@ public partial class AuthorView : Form
     {
         var authors = await _authorServices.ListAsync();
         ChargeDgv(authors);
+        btnUpdate.Enabled = false;
     }
 
     private async void btnCreate_Click(object sender, EventArgs e)
     {
-        CreateAuthor author = new CreateAuthor()
+        try
         {
-            Name = txtEmail.Text,
-            Nationality = txtEmail.Text,
-            DateOfBirth = dtBirth.Value
-        };
+            CreateAuthor author = new CreateAuthor()
+            {
+                Name = txtAuthorName.Text,
+                Nationality = txtnationality.Text,
+                DateOfBirth = dtBirth.Value
+            };
 
-        await _authorServices.CreateAsync(author);
-        var authors = await _authorServices.ListAsync();
-        ChargeDgv(authors);
+            await _authorServices.CreateAsync(author);
+            var authors = await _authorServices.ListAsync();
+            ChargeDgv(authors);
+            RemoveText();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Mensaje de error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
     }
 
     private void dtgData_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -69,12 +79,12 @@ public partial class AuthorView : Form
             // This is not a good practices
             var authors = await _authorServices.ListAsync();
             ChargeDgv(authors);
+            RemoveText();
         }
         catch (Exception ex)
         {
             MessageBox.Show(ex.Message, "Mensaje de error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
     }
 
     private async void btnUpdate_Click(object sender, EventArgs e)
@@ -86,8 +96,8 @@ public partial class AuthorView : Form
 
             CreateAuthor authorToUpdate = new CreateAuthor()
             {
-                Name = txtEmail.Text,
-                Nationality = txtEmail.Text,
+                Name = txtnationality.Text,
+                Nationality = txtnationality.Text,
                 DateOfBirth = dtBirth.Value
             };
 
@@ -97,11 +107,48 @@ public partial class AuthorView : Form
             // This is not a good practices
             var authors = await _authorServices.ListAsync();
             ChargeDgv(authors);
+            RemoveText();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
-            throw;
+            MessageBox.Show(ex.Message, "Mensaje de error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+    }
+
+    private void tgUpdate_ToggledChanged()
+    {
+        try
+        {
+            if (dtgData.Rows.Count <= 0) throw new Exception("Please add an author");
+            if (string.IsNullOrEmpty(author.Id)) throw new Exception("Select an author");
+
+            if (tgUpdate.Toggled)
+            {
+                ChargeLabels();
+                btnUpdate.Enabled = true;
+            }
+            else
+            {
+                btnUpdate.Enabled = false;
+                RemoveText();
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message, "Mensaje de error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void ChargeLabels()
+    {
+        txtAuthorName.Text = author.Nationality;
+        txtnationality.Text = author.Name;
+        btnUpdate.Enabled = true;
+    }
+
+    private void RemoveText()
+    {
+        txtAuthorName.Text = string.Empty;
+        txtnationality.Text = string.Empty;
     }
 }
